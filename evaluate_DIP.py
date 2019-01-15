@@ -11,10 +11,6 @@ import matplotlib.pyplot as plt
 
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '3'
-try :
-  os.chdir('DIP/')
-except :
-  pass
   
 import numpy as np
 from models import *
@@ -25,10 +21,13 @@ import torch.optim
 
 from skimage.measure import compare_psnr
 from utils.denoising_utils import *
-
-torch.backends.cudnn.enabled = True
-torch.backends.cudnn.benchmark =True
-dtype = torch.cuda.FloatTensor
+if torch.cuda.is_available() :
+    torch.backends.cudnn.enabled = True
+    torch.backends.cudnn.benchmark =True
+    dtype = torch.cuda.FloatTensor
+else : 
+    dtype = torch.FloatTensor
+    
 #dtype = torch.FloatTensor
 
 imsize =-1
@@ -115,7 +114,7 @@ def evaluate_net_arch(fname,num_iter = 3000,loss_with_TV = False,LR = 0.01,
     i = 0
     def closure():
         
-        global i, out_avg, psrn_noisy_last, last_net, net_input,interpolation, loss_with_TV
+        #global i, out_avg, psrn_noisy_last, last_net, net_input,interpolation, loss_with_TV
         
         if reg_noise_std > 0:
             net_input = net_input_saved + (noise.normal_() * reg_noise_std)
@@ -171,12 +170,12 @@ def evaluate_net_arch(fname,num_iter = 3000,loss_with_TV = False,LR = 0.01,
     optimize(OPTIMIZER, p, closure, LR, num_iter)
     return psrn_gt_list, psrn_noisy_list
 
-def evaluate_denoising_net_depth(fname,depth_range):
+def evaluate_denoising_net_depth(fname,depth_range=[1,3,5,10]):
     
     list_of_gt_list = []
     list_of_noisy_list = []
     
-    for i in range(depth_range):
+    for i in depth_range:
         psrn_gt_list, psrn_noisy_list = evaluate_net_arch(fname=fname,max_depth=i, overfit=True)
         list_of_gt_list.append(psrn_gt_list)
         list_of_noisy_list.append(psrn_noisy_list)
@@ -209,4 +208,8 @@ def evaluate_denoising_TV(fname, gamma_list=[1e-6,1e-9,1e-8]):
         list_of_gt_list.append(psrn_gt_list_TV) 
         
     return list_of_gt_list, list_of_noisy_list
-    
+
+#%%
+
+#fname = 'data/denoising/F16_GT.png'
+#evaluate_denoising_net_depth(fname=fname)
