@@ -114,7 +114,7 @@ def evaluate_net_arch(fname,num_iter = 3000,loss_with_TV = False,LR = 0.01,
     i = 0
     def closure():
         
-        global i, out_avg, psrn_noisy_last, last_net, net_input,interpolation, loss_with_TV
+        nonlocal i, out_avg, psrn_noisy_last, last_net, net_input,interpolation, loss_with_TV
         
         if reg_noise_std > 0:
             net_input = net_input_saved + (noise.normal_() * reg_noise_std)
