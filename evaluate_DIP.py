@@ -34,7 +34,7 @@ imsize =-1
 PLOT = True
 
 
-def evaluate_net_arch(fname,num_iter = 3000,loss_with_TV = False,LR = 0.01,
+def evaluate_net_arch(fname,num_iter = 6000,loss_with_TV = False,LR = 0.01,
                        OPT_OVER = 'net', max_depth = 5, start_with_blur = False,
                        input_depth=32,back_track_range=100, overfit=False, gamma = 1e-8, sigma = 25) : 
     
@@ -194,7 +194,7 @@ def evaluate_denoising_start_with_blur(fname,sigma = 25):
     return list_of_gt_list, list_of_noisy_list
 
 
-def evaluate_denoising_TV(fname, gamma_list=[1e-6,1e-9,1e-8]):
+def evaluate_denoising_TV(fname, gamma_list=[1e-6,1e-7,1e-8]):
     
     list_of_gt_list = []
     list_of_noisy_list = []
