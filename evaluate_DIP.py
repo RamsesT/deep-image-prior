@@ -185,7 +185,7 @@ def evaluate_denoising_net_depth(fname,depth_range=[1,3,5,10]):
 
 def evaluate_denoising_start_with_blur(fname,sigma = 25):
     
-    psrn_gt_list, psrn_noisy_list = evaluate_net_arch(fname=fname,start_with_blur=False, sigma=sigma)
+    psrn_gt_list, psrn_noisy_list = evaluate_net_arch(fname=fname,start_with_blur=False, sigma=sigma,input_depth=3)
     psrn_gt_list_blur, psrn_noisy_list_blur = evaluate_net_arch(fname=fname,start_with_blur=True, sigma=sigma)
 
     list_of_noisy_list = [psrn_noisy_list,psrn_noisy_list_blur]
