@@ -183,10 +183,10 @@ def evaluate_denoising_net_depth(fname,depth_range=[1,3,5,10]):
     return list_of_gt_list, list_of_noisy_list
 
 
-def evaluate_denoising_start_with_blur(fname,sigma = 25):
+def evaluate_denoising_start_with_blur(fname,sigma = 25,num_iter=4000):
     
-    psrn_gt_list, psrn_noisy_list = evaluate_net_arch(fname=fname,start_with_blur=False, sigma=sigma,input_depth=3)
-    psrn_gt_list_blur, psrn_noisy_list_blur = evaluate_net_arch(fname=fname,start_with_blur=True, sigma=sigma)
+    psrn_gt_list, psrn_noisy_list = evaluate_net_arch(fname=fname,start_with_blur=False, sigma=sigma,input_depth=3,num_iter=num_iter)
+    psrn_gt_list_blur, psrn_noisy_list_blur = evaluate_net_arch(fname=fname,start_with_blur=True, sigma=sigma,num_iter=num_iter)
 
     list_of_noisy_list = [psrn_noisy_list,psrn_noisy_list_blur]
     list_of_gt_list = [psrn_gt_list,psrn_gt_list_blur]
@@ -194,7 +194,7 @@ def evaluate_denoising_start_with_blur(fname,sigma = 25):
     return list_of_gt_list, list_of_noisy_list
 
 
-def evaluate_denoising_TV(fname, gamma_list=[1e-6,1e-7,1e-8]):
+def evaluate_denoising_TV(fname, gamma_list=[1e-4,1e-6,1e-8],num_iter=8000):
     
     list_of_gt_list = []
     list_of_noisy_list = []
@@ -203,7 +203,7 @@ def evaluate_denoising_TV(fname, gamma_list=[1e-6,1e-7,1e-8]):
     list_of_gt_list = [psrn_gt_list]
     list_of_noisy_list = [psrn_noisy_list]
     for gamma in gamma_list: 
-        psrn_gt_list_TV, psrn_noisy_list_TV = evaluate_net_arch(fname=fname,LR=LR,loss_with_TV=True,gamma=gamma)
+        psrn_gt_list_TV, psrn_noisy_list_TV = evaluate_net_arch(fname=fname,LR=LR,loss_with_TV=True,gamma=gamma,num_iter=num_iter)
         list_of_noisy_list.append(psrn_noisy_list_TV)
         list_of_gt_list.append(psrn_gt_list_TV) 
         
